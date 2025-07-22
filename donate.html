@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donate | Pi Help</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #fdfdfd, #ffeaa7);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      color: #222;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 20px;
+      width: 100%;
+      max-width: 420px;
+      margin-top: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .balance {
+      background: #ffdd59;
+      color: #000;
+      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 14px;
+      box-shadow: 0 0 12px #ffdd59cc;
+      font-size: 18px;
+    }
+
+    .request {
+      margin-top: 20px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .description {
+      margin: 10px 0;
+      color: #333;
+      line-height: 1.4;
+    }
+
+    .document {
+      margin: 10px 0;
+      background: #fff5cc;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .progress-container {
+      margin: 10px 0;
+    }
+
+    .progress-label {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .progress-bar {
+      background: #e0e0e0;
+      height: 14px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      width: 20%;
+      background: #ffbe33;
+      transition: 0.3s;
+    }
+
+    .donate-area {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .donate-area input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .donate-area button {
+      background: #ffbe33;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .footer-warning {
+      margin-top: 40px;
+      font-size: 13px;
+      color: red;
+      text-align: center;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="balance">Balance: 100 
+  Pi</div>
+
+  <div class="glass request">
+    <div class="title">Request: Help for College Fee</div>
+    <div class="description">I need Pi to pay for my semester fee. Any help is appreciated!</div>
+    <div class="document"><strong>Document:</strong> <a href="#">View proof.pdf</a></div>
+
+    <div class="progress-container">
+      <div class="progress-label">Progress: <span id="currentAmount">1.2</span> / <span id="goalAmount">25.5</span> Pi</div>
+      <div class="progress-bar"><div class="progress" id="progressBar"></div></div>
+    </div>
+
+    <div class="donate-area">
+      <input type="number" id="donateInput" placeholder="Enter amount" min="0.1" max="25.5" step="0.1" />
+      <button onclick="donatePi()">Donate</button>
+    </div>
+  </div>
+
+  <div class="footer-warning">⚠️ Under Development – Simulation Only</div>
+
+  <script>
+    let balance = 100;
+    let current = 1.2;
+    let goal = 20.5;
+
+    function donatePi() {
+      const input = document.getElementById('donateInput');
+      let amount = parseFloat(input.value);
+      if (isNaN(amount) || amount <= 0 || amount > balance) {
+        alert("Enter valid amount");
+        return;
+      }
+
+      if (current + amount > goal) {
+        amount = goal - current;
+      }
+
+      current += amount;
+      balance -= amount;
+
+      document.querySelector(".balance").innerText = `Pi Balance: ${balance.toFixed(2)} Pi`;
+      document.getElementById("currentAmount").innerText = current.toFixed(2);
+      document.getElementById("progressBar").style.width = `${(current / goal) * 100}%`;
+
+      input.value = '';
+
+      if (current >= goal) {
+        alert("🎉 Goal Completed! Request Closed.");
+        document.querySelector(".donate-area").style.display = "none";
+      } else {
+        alert(`✅ Donated ${amount.toFixed(2)} Pi`);
+      }
+    }
+  </script>
+
+</body>
+</html>
