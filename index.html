@@ -2,10 +2,57 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; URL='https://hallowed-chicken-616.convex.app/'" />
-  <title>Redirecting...</title>
+  <title>Embed Page</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    #errorPopup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      font-size: 24px;
+      text-align: center;
+      padding-top: 20%;
+      z-index: 9999;
+    }
+  </style>
 </head>
 <body>
-  <p>If you are not redirected automatically, <a href="https://hallowed-chicken-616.convex.app/">click here</a>.</p>
+  <div id="errorPopup">❌ Error: Could not embed page.</div>
+  <iframe id="embedFrame" src="https://hallowed-chicken-616.convex.app/"></iframe>
+
+  <script>
+    const iframe = document.getElementById("embedFrame");
+    const popup = document.getElementById("errorPopup");
+
+    // Give it 2 seconds to load, then check
+    setTimeout(() => {
+      try {
+        // Try to access iframe content
+        const test = iframe.contentDocument || iframe.contentWindow.document;
+        if (!test || test.body.innerHTML.length === 0) {
+          throw new Error("Blocked");
+        }
+      } catch (e) {
+        // If access fails or is blocked, show error popup
+        popup.style.display = "block";
+        iframe.style.display = "none";
+      }
+    }, 2000);
+  </script>
 </body>
 </html>
